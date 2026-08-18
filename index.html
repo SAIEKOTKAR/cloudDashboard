@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <h1 class="display-4">☁️ Welcome to Smart Cloud Manager</h1>
+    <p class="lead">Manage your virtual infrastructure from one dashboard</p>
+    <hr class="my-4">
+    <p>Get started by logging in or creating an account</p>
+    <div class="mt-4">
+        <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg me-2">
+            <i class="bi bi-box-arrow-in-right"></i> Login
+        </a>
+        <a href="{{ url_for('register') }}" class="btn btn-success btn-lg">
+            <i class="bi bi-person-plus"></i> Register
+        </a>
+    </div>
+</div>
+{% endblock %}

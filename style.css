@@ -1,0 +1,80 @@
+/* Custom styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.sidebar {
+    min-height: 100vh;
+    background: #2c3e50;
+    padding-top: 20px;
+}
+
+.sidebar a {
+    color: #ecf0f1;
+    text-decoration: none;
+    padding: 12px 20px;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    background: #34495e;
+    padding-left: 25px;
+}
+
+.sidebar a.active {
+    background: #3498db;
+    border-left: 4px solid white;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+}
+
+.status-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: #3498db !important;
+}
+
+.card {
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+.card-header {
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.progress {
+    height: 8px;
+    border-radius: 10px;
+}
+
+.btn {
+    border-radius: 8px;
+}
+
+.table {
+    font-size: 14px;
+}
+
+.alert {
+    border-radius: 10px;
+}

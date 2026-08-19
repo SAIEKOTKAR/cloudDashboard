@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2><i class="bi bi-diagram-3"></i> Virtual Networks</h2>
+<hr>
+
+<!-- Add Network Form -->
+<div class="card mb-4">
+    <div class="card-header bg-info text-white">
+        <h5 class="mb-0">Create Network</h5>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('add_network_route') }}">
+            <div class="row">
+                <div class="col-md-4">
+                    <label>Network Name</label>
+                    <input type="text" name="network_name" class="form-control" placeholder="prod-network" required>
+                </div>
+                <div class="col-md-4">
+                    <label>CIDR (e.g., 10.0.0.0/24)</label>
+                    <input type="text" name="cidr" class="form-control" placeholder="10.0.0.0/24" required>
+                </div>
+                <div class="col-md-3">
+                    <label>Gateway</label>
+                    <input type="text" name="gateway" class="form-control" placeholder="10.0.0.1">
+                </div>
+                <div class="col-md-1">
+                    <label>&nbsp;</label>
+                    <button type="submit" class="btn btn-info w-100">Create</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Networks List -->
+<div class="row">
+    {% if networks %}
+        {% for network in networks %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5>{{ network.network_name }}</h5>
+                    <p><strong>CIDR:</strong> {{ network.cidr }}</p>
+                    <p><strong>Gateway:</strong> {{ network.gateway or 'N/A' }}</p>
+                    <a href="{{ url_for('delete_network_route', network_id=network.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Delete this network?')">Delete</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-muted">No networks created yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

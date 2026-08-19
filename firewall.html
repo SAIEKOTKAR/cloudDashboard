@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2><i class="bi bi-shield-lock"></i> Firewall Rules</h2>
+<hr>
+
+<!-- Add Rule Form -->
+<div class="card mb-4">
+    <div class="card-header bg-danger text-white">
+        <h5 class="mb-0">Add Firewall Rule</h5>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('add_firewall_route') }}">
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Rule Name</label>
+                    <input type="text" name="rule_name" class="form-control" placeholder="Allow SSH" required>
+                </div>
+                <div class="col-md-2">
+                    <label>Protocol</label>
+                    <select name="protocol" class="form-control">
+                        <option>TCP</option>
+                        <option>UDP</option>
+                        <option>ICMP</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label>Port</label>
+                    <input type="number" name="port" class="form-control" placeholder="22" required>
+                </div>
+                <div class="col-md-3">
+                    <label>Source IP</label>
+                    <input type="text" name="source_ip" class="form-control" placeholder="0.0.0.0/0" value="0.0.0.0/0">
+                </div>
+                <div class="col-md-1">
+                    <label>Action</label>
+                    <select name="action" class="form-control">
+                        <option>Allow</option>
+                        <option>Deny</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <label>&nbsp;</label>
+                    <button type="submit" class="btn btn-danger w-100">Add</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Rules List -->
+<div class="card">
+    <div class="card-header bg-dark text-white">
+        <h5 class="mb-0">Active Rules</h5>
+    </div>
+    <div class="card-body">
+        {% if rules %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Rule Name</th>
+                    <th>Protocol</th>
+                    <th>Port</th>
+                    <th>Source IP</th>
+                    <th>Action</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rule in rules %}
+                <tr>
+                    <td>{{ rule.rule_name }}</td>
+                    <td>{{ rule.protocol }}</td>
+                    <td>{{ rule.port }}</td>
+                    <td>{{ rule.source_ip }}</td>
+                    <td><span class="badge {% if rule.action == 'Allow' %}bg-success{% else %}bg-danger{% endif %}">{{ rule.action }}</span></td>
+                    <td>
+                        <a href="{{ url_for('delete_firewall_route', rule_id=rule.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Delete this rule?')">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="text-muted">No firewall rules configured.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

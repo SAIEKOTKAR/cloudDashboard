@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2><i class="bi bi-clock-history"></i> Activity Logs</h2>
+<hr>
+
+<div class="card">
+    <div class="card-header bg-dark text-white">
+        <h5 class="mb-0">Recent Activities</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Action</th>
+                        <th>Details</th>
+                        <th>Timestamp (IST)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if logs %}
+                        {% for log in logs %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td><span class="badge bg-info">{{ log.action }}</span></td>
+                            <td>{{ log.details or 'N/A' }}</td>
+                            <!-- Since logger.py now saves IST directly, we just print it! -->
+                            <td>{{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">No logs found</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <p class="text-muted small">Showing last 50 logs</p>
+    </div>
+</div>
+{% endblock %}

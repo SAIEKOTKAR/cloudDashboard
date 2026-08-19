@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2><i class="bi bi-server"></i> Virtual Machines</h2>
+<hr>
+
+<!-- Create VM Form -->
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Create New VM</h5>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('create_vm_route') }}">
+            <div class="row">
+                <div class="col-md-3">
+                    <label>VM Name</label>
+                    <input type="text" name="vm_name" class="form-control" placeholder="webserver-01" required>
+                </div>
+                <div class="col-md-2">
+                    <label>CPU Cores</label>
+                    <input type="number" name="cpu_cores" class="form-control" value="1" min="1" max="16" required>
+                </div>
+                <div class="col-md-2">
+                    <label>RAM (GB)</label>
+                    <input type="number" name="ram_gb" class="form-control" value="2" min="1" max="64" required>
+                </div>
+                <div class="col-md-2">
+                    <label>Storage (GB)</label>
+                    <input type="number" name="storage_gb" class="form-control" value="20" min="10" max="500" required>
+                </div>
+                <div class="col-md-2">
+                    <label>OS Type</label>
+                    <select name="os_type" class="form-control">
+                        <option>Ubuntu 22.04</option>
+                        <option>Ubuntu 20.04</option>
+                        <option>Windows Server 2022</option>
+                        <option>CentOS 8</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <label>&nbsp;</label>
+                    <button type="submit" class="btn btn-success w-100">Create</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- VM List -->
+<div class="row">
+    {% if vms %}
+        {% for vm in vms %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5>{{ vm.vm_name }}</h5>
+                    <p class="mb-1"><strong>CPU:</strong> {{ vm.cpu_cores }} cores</p>
+                    <p class="mb-1"><strong>RAM:</strong> {{ vm.ram_gb }} GB</p>
+                    <p class="mb-1"><strong>Storage:</strong> {{ vm.storage_gb }} GB</p>
+                    <p class="mb-1"><strong>IP:</strong> {{ vm.ip_address }}</p>
+                    <p class="mb-1"><strong>OS:</strong> {{ vm.os_type }}</p>
+                    <span class="status-badge {% if vm.status == 'Running' %}bg-success{% else %}bg-danger{% endif %} text-white">
+                        {{ vm.status }}
+                    </span>
+                    <div class="mt-2">
+                        <a href="{{ url_for('toggle_vm_route', vm_id=vm.id) }}" class="btn btn-sm btn-warning">
+                            {% if vm.status == 'Running' %}Stop{% else %}Start{% endif %}
+                        </a>
+                        <a href="{{ url_for('delete_vm_route', vm_id=vm.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Delete this VM?')">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-muted">No VMs yet. Create one above!</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2><i class="bi bi-heart-pulse"></i> Health Monitor</h2>
+<hr>
+
+<div class="row">
+    {% if vms %}
+        {% for vm in vms %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5>{{ vm.vm_name }}</h5>
+                    <p><strong>Status:</strong> 
+                        <span class="status-badge {% if vm.status == 'Running' %}bg-success{% else %}bg-danger{% endif %} text-white">
+                            {{ vm.status }}
+                        </span>
+                    </p>
+                    <p><strong>Uptime:</strong> 
+                        {% if vm.status == 'Running' %}
+                            {{ range(1, 100)|random }} days
+                        {% else %}
+                            0 days
+                        {% endif %}
+                    </p>
+                    <p><strong>CPU Usage:</strong> {{ range(10, 90)|random }}%</p>
+                    <p><strong>RAM Usage:</strong> {{ range(20, 80)|random }}%</p>
+                    <p><strong>Storage Used:</strong> {{ range(10, 70)|random }}%</p>
+                    <div class="progress mb-2">
+                        <div class="progress-bar bg-success" style="width: {{ range(10, 90)|random }}%"></div>
+                    </div>
+                    <p><strong>IP Address:</strong> {{ vm.ip_address }}</p>
+                    <p><strong>Created:</strong> {{ vm.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-muted">No VMs to monitor. Create one first!</p>
+    {% endif %}
+</div>
+{% endblock %}

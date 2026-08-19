@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2><i class="bi bi-currency-rupee"></i> Cost Estimator</h2>
+<hr>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body text-center">
+                <h3>₹{{ total_cost }}</h3>
+                <p>Total Monthly Cost</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-warning">
+                <h5 class="mb-0">Cost Breakdown</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>VM Name</th>
+                            <th>CPU (₹500/core)</th>
+                            <th>RAM (₹200/GB)</th>
+                            <th>Storage (₹50/GB)</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cost_breakdown %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>₹{{ item.cpu }}</td>
+                            <td>₹{{ item.ram }}</td>
+                            <td>₹{{ item.storage }}</td>
+                            <td><strong>₹{{ item.total }}</strong></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cost Chart -->
+<div class="card mt-4">
+    <div class="card-header bg-info text-white">
+        <h5 class="mb-0">Cost Distribution</h5>
+    </div>
+    <div class="card-body">
+        <canvas id="costChart" height="100"></canvas>
+    </div>
+</div>
+
+<script>
+    const ctx = document.getElementById('costChart').getContext('2d');
+    const labels = {{ cost_breakdown|map(attribute='name')|list|tojson }};
+    const data = {{ cost_breakdown|map(attribute='total')|list|tojson }};
+    
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Monthly Cost (₹)',
+                data: data,
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
